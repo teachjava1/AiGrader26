@@ -1,0 +1,169 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>AI Grader 26 – Grading (v1.0.7)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    body { font-family: Arial, sans-serif; background:#f5f5f5; margin:0; padding:0; }
+    .container { max-width:900px; margin:30px auto; background:#fff; padding:25px;
+      border-radius:8px; box-shadow:0 2px 8px rgba(0,0,0,0.08); position:relative; }
+    h1 { text-align:center; margin-top:0; }
+    textarea { width:100%; padding:8px; border-radius:4px;
+      border:1px solid #ccc; font-size:14px; resize:vertical; box-sizing:border-box; }
+    input[type=file]{ margin:10px 0; }
+    .btn-primary{ background:#1976d2; color:white; border:none; padding:10px 18px;
+      border-radius:4px; cursor:pointer; font-size:14px; }
+    .btn-primary:hover{ background:#0f5aa5; }
+    .error{ background:#ffebee; padding:10px; border-left:4px solid #c62828;
+      color:#b71c1c; border-radius:4px; margin-top:15px; }
+    .section-title { margin-top:20px; font-weight:bold; }
+    .copy-btn{
+      background:#1976d2;
+      color:white;
+      border:none;
+      padding:6px 12px;
+      border-radius:4px;
+      cursor:pointer;
+      font-size:12px;
+      margin-top:6px;
+    }
+    .copy-btn:hover{ background:#0f5aa5; }
+    .teacher-report{
+      margin-top:10px;
+      padding:10px;
+      border-radius:6px;
+      border:1px solid #ccc;
+      white-space:pre-wrap;
+      font-size:14px;
+      font-family:monospace;
+    }
+    .rubric-pill {
+      display:inline-block;
+      padding:4px 10px;
+      border-radius:999px;
+      font-size:11px;
+      margin-bottom:10px;
+      background:#e8f5e9;
+      color:#2e7d32;
+      border:1px solid #c8e6c9;
+    }
+    .rubric-pill.off {
+      background:#fff3e0;
+      color:#ef6c00;
+      border-color:#ffe0b2;
+    }
+    #loading-overlay {
+      display: none;
+      position: fixed;
+      top:0; left:0; width:100%; height:100%;
+      background: rgba(0,0,0,0.55);
+      backdrop-filter: blur(3px);
+      z-index: 9999;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+    .spinner {
+      border: 6px solid #f3f3f3;
+      border-top: 6px solid #1976d2;
+      border-radius: 50%;
+      width: 65px;
+      height: 65px;
+      animation: spin 0.9s linear infinite;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    .loading-text {
+      margin-top: 20px;
+      color:white;
+      font-size:18px;
+      font-family:Arial, sans-serif;
+      text-shadow: 0 0 5px black;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>AI Grader 26</h1>
+  <p style="text-align:center; color:#555;">
+    Copy and paste or upload a rubric.<br>
+    Copy and paste or upload a student file.
+  </p>
+
+  {% if rubric_loaded %}
+    <div class="rubric-pill">Rubric loaded and cached</div>
+  {% else %}
+    <div class="rubric-pill off">No rubric cached yet</div>
+  {% endif %}
+
+  <form method="POST" enctype="multipart/form-data" id="gradeForm">
+    <h3>Rubric</h3>
+    <textarea name="rubric_text" placeholder="Paste your rubric here (leave blank to reuse cached rubric)..." rows="5"></textarea>
+    <br><input type="file" name="rubric_file" />
+
+    <h3>Student Submission</h3>
+    <textarea name="student_text" placeholder="Paste student work here..." rows="6"></textarea>
+    <br><input type="file" name="student_file" />
+
+    <button type="submit" class="btn-primary">Run AI Grader</button>
+  </form>
+
+  {% if error %}
+    <div class="error">{{ error }}</div>
+  {% endif %}
+
+  {% if summary_text %}
+    <div class="section-title">Student Summary</div>
+    <textarea id="studentSummary" readonly rows="7" style="font-family:monospace;">{{ summary_text }}</textarea>
+    <br>
+    <button class="copy-btn" onclick="copyStudentSummary()">Copy Student Summary</button>
+  {% endif %}
+
+  {% if feedback %}
+    <div class="section-title">Full Teacher Report</div>
+    <div id="teacherReport" class="teacher-report">{{ feedback }}</div>
+    <button class="copy-btn" onclick="copyTeacherReport()">Copy Teacher Report</button>
+  {% endif %}
+</div>
+
+<div id="loading-overlay">
+  <div class="spinner"></div>
+  <div class="loading-text">Processing your submission...</div>
+</div>
+
+<script>
+  const form = document.getElementById("gradeForm");
+  if (form) {
+    form.addEventListener("submit", function(){
+      const overlay = document.getElementById("loading-overlay");
+      if (overlay) {
+        overlay.style.display = "flex";
+      }
+    });
+  }
+
+  function copyStudentSummary() {
+    const box = document.getElementById("studentSummary");
+    if (!box) return;
+    box.select();
+    box.setSelectionRange(0, 99999);
+    navigator.clipboard.writeText(box.value).then(() => {
+      alert("Student summary copied to clipboard!");
+    });
+  }
+
+  function copyTeacherReport() {
+    const div = document.getElementById("teacherReport");
+    if (!div) return;
+    const text = div.innerText;
+    navigator.clipboard.writeText(text).then(() => {
+      alert("Full teacher report copied to clipboard!");
+    });
+  }
+</script>
+</body>
+</html>

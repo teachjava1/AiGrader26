@@ -1,0 +1,103 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>AI Grader 26 – Teacher Access</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: radial-gradient(circle at top, #1e88e5 0, #0b1020 45%, #050814 100%);
+      color: #f5f5f5;
+    }
+    .card {
+      background: rgba(10, 15, 35, 0.96);
+      border-radius: 16px;
+      padding: 32px 28px;
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.6);
+      width: 330px;
+      text-align: center;
+      border: 1px solid rgba(80, 120, 255, 0.45);
+    }
+    .logo {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      border: 2px solid #42a5f5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 14px auto;
+      font-weight: bold;
+      font-size: 20px;
+      color: #42a5f5;
+    }
+    h1 {
+      margin: 0;
+      font-size: 22px;
+      color: #e3f2fd;
+    }
+    p.sub {
+      margin-top: 6px;
+      font-size: 13px;
+      color: #b0bec5;
+    }
+    input[type="password"] {
+      width: 100%;
+      padding: 10px 11px;
+      margin-top: 22px;
+      border-radius: 10px;
+      border: 1px solid #394b63;
+      background: #050814;
+      color: #e3f2fd;
+      font-size: 14px;
+      box-sizing: border-box;
+      outline: none;
+    }
+    input[type="password"]::placeholder {
+      color: #718096;
+    }
+    button {
+      margin-top: 18px;
+      width: 100%;
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: none;
+      background: linear-gradient(135deg, #42a5f5, #1e88e5);
+      color: #ffffff;
+      font-weight: bold;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 10px 25px rgba(66, 165, 245, 0.35);
+    }
+    button:hover {
+      background: linear-gradient(135deg, #64b5f6, #1e88e5);
+    }
+    .footer {
+      margin-top: 14px;
+      font-size: 11px;
+      color: #90a4ae;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="logo">AI</div>
+    <h1>AI Grader 26</h1>
+    <p class="sub">Teacher Access Portal</p>
+    <form method="POST">
+      <input type="password" name="password" placeholder="Access password (e.g., teacheraccess)" />
+      <button type="submit">Enter Grader</button>
+    </form>
+    <div class="footer">
+      Single-teacher license • Do not share publicly
+    </div>
+  </div>
+</body>
+</html>
