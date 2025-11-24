@@ -5,3 +5,4 @@ pandas
 python-docx
 PyPDF2
 openpyxl
+gunicorn
